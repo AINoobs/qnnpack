@@ -48,26 +48,48 @@ static inline void pack_q8gemm_w(
   }
 }
 
+
+/**
+ * Pack bias `b` and weight `k` into `packed_w`. Pack size (4*n + n*h*w*c).
+ *
+ * `packed_w` is round_up(n/nr) slots. `packed_w` layout as below. One slot one line.
+ * Each slot includes leading 32bit bias and 8bit quantized weights. nr is usually 8.
+ * +------------------------+-------------------------------------------------------+
+ * |  nr bias (32bit each)  | `nr * kernel_size * input_channel` weight (8bit each) |
+ * +------------------------+-------------------------------------------------------+
+ * |  nr bias (32bit each)  | `nr * kernel_size * input_channel` weight (8bit each) |
+ * +------------------------+-------------------------------------------------------+
+ * |              ............................                                      |
+ * +------------------------+-------------------------------------------------------+
+ * |  nr bias (32bit each)  | `nr * kernel_size * input_channel` weight (8bit each) |
+ * +------------------------+-------------------------------------------------------+
+ * The bias here is *accumulated bias* which aims to pre-compute zero point
+ * related constants, such that reduce computation when operator runs.
+ * Kernel layout is n,ks,kc(NHWC) for original kernel and the packed weight.
+ */
 static inline void pack_q8conv_w(
   size_t n,
-  size_t ks,
-  size_t kc,
+  size_t ks,    // kernel size
+  size_t kc,    // kernel channel
   uint32_t nr,
-  uint32_t kr,
-  uint8_t izp,
-  uint8_t kzp,
-  const uint8_t* k,
-  const int32_t* b,
+  uint32_t kr,  // similar to mr and nr. 1 for arm, 2 for x86
+  uint8_t izp,  // input zero pint
+  uint8_t kzp,  // kernel zero pint
+  const uint8_t* k,   // kernel
+  const int32_t* b,   // bias
   void* packed_w)
 {
+  // the input * kernel zero_point part of *accumulated bias*.
   const int32_t boff = (int32_t) ks * (int32_t) kc * (int32_t) izp * (int32_t) kzp;
   for (size_t nr_block_start = 0; nr_block_start < n; nr_block_start += nr) {
     const size_t nr_block_size = min(n - nr_block_start, nr);
-    int32_t* packed_b = (int32_t*) packed_w;
+    int32_t* packed_b = (int32_t*) packed_w; // points to bias in this slot
+    // first nr*4 bytes in packed weight slot are nr bias
     for (size_t nr_block_offset = 0; nr_block_offset < nr_block_size; nr_block_offset++) {
       *((int32_t*) packed_w) = b[nr_block_start + nr_block_offset] + boff;
       packed_w = (void*) ((uintptr_t) packed_w + sizeof(int32_t));
     }
+    // points to weight in this slot. there are around `nr * kernel_size * K(input channel)` weight.
     packed_w = (void*) ((uintptr_t) packed_w + (nr - nr_block_size) * sizeof(int32_t));
     for (size_t ki = 0; ki < ks; ki++) {
       for (size_t kr_block_start = 0; kr_block_start < kc; kr_block_start += kr) {
@@ -75,13 +97,15 @@ static inline void pack_q8conv_w(
         for (size_t nr_block_offset = 0; nr_block_offset < nr_block_size; nr_block_offset++) {
           int32_t ksum = 0;
           for (size_t kr_block_offset = 0; kr_block_offset < kr_block_size; kr_block_offset++) {
+            // kernel layout feed from caffe2 is oC,iC,kH,kW, why seems n,ks,kc here?
+            // (kr_block_start + kr_block_offset) = which input channel
             const uint8_t kv =
               k[((nr_block_start + nr_block_offset) * ks + ki) * kc + (kr_block_start + kr_block_offset)];
             ksum += (int32_t) kv;
             *((uint8_t*) packed_w) = kv;
             packed_w = (void*) ((uintptr_t) packed_w + sizeof(uint8_t));
           }
-          packed_b[nr_block_offset] -= ksum * (int32_t) izp;
+          packed_b[nr_block_offset] -= ksum * (int32_t) izp; // update more into *accumulated bias*
           packed_w = (void*) ((uintptr_t) packed_w + (kr - kr_block_size) * sizeof(uint8_t));
         }
         packed_w = (void*) ((uintptr_t) packed_w + (nr - nr_block_size) * kr * sizeof(uint8_t));

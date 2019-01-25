@@ -14,8 +14,11 @@
 void q8conv_ukernel_4x8__neon(
     size_t mr,
     size_t nr,
-    size_t kc,
-    size_t ks,
+    size_t kc, // kernel channel
+    size_t ks, // kernel size
+    // For each output pixel, used input pixels have indirect pointer stored here.
+    // So, size: $$round_tile(OH * OW) * (kH * kW)$$, from `qnnp_setup_convolution2d_nhwc_q8()`.
+    // These pointers are filled in `qnnp_indirection_init_conv2d()`.
     const uint8_t** restrict a,
     const void* restrict w,
     uint8_t* restrict c,
@@ -24,6 +27,7 @@ void q8conv_ukernel_4x8__neon(
 {
   const uint8x8_t vb_zero_point = vld1_dup_u8((const uint8_t*) &quantization_params->neon.kernel_zero_point);
 
+  // the pre-computed *accumulated bias* w.r.t. weight and zero point.
   int32x4_t vacc0x0123 = vld1q_s32(w); w = (void*) ((uintptr_t) w + sizeof(int32x4_t));
   int32x4_t vacc0x4567 = vld1q_s32(w); w = (void*) ((uintptr_t) w + sizeof(int32x4_t));
   int32x4_t vacc1x0123 = vacc0x0123;
@@ -34,6 +38,8 @@ void q8conv_ukernel_4x8__neon(
   int32x4_t vacc3x4567 = vacc0x4567;
 
   do {
+    // Indirect buffer shape `IN,Tile,kH,kW,MR`, check `qnnp_indirection_init_conv2d()`
+    // each address is expected to address input pixel of `input channel` size in continuous memory.
     const uint8_t* restrict a0 = *a++;
     const uint8_t* restrict a1 = *a++;
     const uint8_t* restrict a2 = *a++;

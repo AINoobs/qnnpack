@@ -14,11 +14,31 @@
 #include <qnnpack/operator.h>
 #include <qnnpack/math.h>
 
-
+/**
+ * Build the *indirect buffer* which holds pointers to input memory.
+ *
+ * Indirect buffer is composed by IN*OH*OW pixel buffer, each of which
+ * holds kH*kW pointers point to the related input pixel of the output one.
+ * In practice, Indirect buffer shape is `IN,Tile,kH,kW,MR`. Tile is `oH*oW/MR`.
+ *
+ * The building process of indirect buffer is similar to Conv computing.
+ * Output channel is ignored as the buffer is to direct input, and for each
+ * output channel all input channels are involed. If output channel is considered
+ * there will be redundant pointers (of output channel copy) in the buffer.
+ * Input channel is ignored too since it is the most internal index which
+ * can be easily inferenced at runtime. First skip the `IN` dimension.
+ * Each output channel image is tiled according to `output_tile_size` (`mr`),
+ * that is the `Tile` dimension. Focusing the tile, `MR*IC` input pixels will be used.
+ * Each of these pixels will be used `kH*kW` times against kernel.
+ * Here, `IC` is not a problem when addressing. Matching `kH*kW` input with
+ * kernel is buffer's job. The in tile shape is `kH*kW*MR*(IC)` organized such that
+ * for striding each kernel value multiply input value, there are MR parallal
+ * computing task each handles IC elements by step.
+ */
 void qnnp_indirection_init_conv2d(
   qnnp_operator_t op,
-  size_t output_tile_size,
-  size_t tiled_output_size)
+  size_t output_tile_size,  // = mr
+  size_t tiled_output_size) // rounded output with tile size
 {
   const void** indirection_buffer   = op->indirection_buffer;
   const void* input                 = op->input;
@@ -57,9 +77,18 @@ void qnnp_indirection_init_conv2d(
             if (input_y < input_height) {
               for (size_t kernel_x = 0; kernel_x < kernel_width; kernel_x++) {
                 const size_t input_x = output_x * stride_width + kernel_x * dilation_width - input_padding_left;
-                const size_t index = (group * batch_size + image) * tiled_output_size * kernel_size + output_tile_start * kernel_size + (kernel_y * kernel_width + kernel_x) * output_tile_size + output_tile_offset;
+                // index of indirect buffer, every output pixel needs input pixel of `kernel_size`
+                // shape: n,tile,kH,kW,tile_offset
+                const size_t index = (group * batch_size + image) * tiled_output_size * kernel_size + // per image part
+                                     output_tile_start * kernel_size + // offset of this tile in output
+                                     (kernel_y * kernel_width + kernel_x) * output_tile_size + // kernel stepping
+                                     output_tile_offset;  // in tile offset
                 if (input_x < input_width) {
-                  indirection_buffer[index] = input + ((image * input_height + input_y) * input_width + input_x) * input_pixel_stride + group * group_input_channels;
+                  // indirection_buffer[index] = input + ((image * input_height + input_y) * input_width + input_x) * input_pixel_stride + group * group_input_channels;
+                  indirection_buffer[index] = input + // base
+                                              image * input_height * input_width * input_pixel_stride + // image before this
+                                              (input_y * input_width + input_x) * input_pixel_stride + // start point of this input (y,x), input_pixel_stride is channel
+                                              group * group_input_channels;  // the grouped channel - most internal index.
                 } else {
                   indirection_buffer[index] = zero;
                 }
@@ -67,7 +96,8 @@ void qnnp_indirection_init_conv2d(
             } else {
               for (size_t kernel_x = 0; kernel_x < kernel_width; kernel_x++) {
                 const size_t index =
-                  (group * batch_size + image) * tiled_output_size * kernel_size + output_tile_start * kernel_size + (kernel_y * kernel_width + kernel_x) * output_tile_size + output_tile_offset;
+                  (group * batch_size + image) * tiled_output_size * kernel_size +
+                  output_tile_start * kernel_size + (kernel_y * kernel_width + kernel_x) * output_tile_size + output_tile_offset;
                 indirection_buffer[index] = zero;
               }
             }

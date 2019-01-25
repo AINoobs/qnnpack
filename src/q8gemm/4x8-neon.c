@@ -11,6 +11,17 @@
 #include <qnnpack/q8gemm.h>
 
 
+/**
+ * QNNPACK allows arbitrary stride along channel dimensions of tensors.
+ * from https://github.com/pytorch/QNNPACK/issues/45#issuecomment-456210372
+ *
+ * This enables high-level frameworks to implement zero-copy Concatenation
+ * & Channel split, like you'd need e.g. for ShuffleNet v2. When 1x1
+ * convolution maps onto GEMM, A = input tensor (M x K), B = filter tensor (K x N),
+ * C = output tensor (M x N), M = output height * output width, K = input channels,
+ * and N = output channels. a_stride controls stride along the K dimension in A
+ * and c_stride controls stride along the N dimension in C.
+ */
 void q8gemm_ukernel_4x8__neon(
     size_t mr,
     size_t nr,
@@ -22,6 +33,7 @@ void q8gemm_ukernel_4x8__neon(
     size_t c_stride,
     const union qnnp_conv_quantization_params quantization_params[restrict static 1])
 {
+  // the pre-computed bias w.r.t. kernel value and zero point of input and kernel.
   int32x4_t vacc0x0123 = vld1q_s32(w); w = (const void*) ((uintptr_t) w + 16);
   int32x4_t vacc0x4567 = vld1q_s32(w); w = (const void*) ((uintptr_t) w + 16);
   int32x4_t vacc1x0123 = vacc0x0123;
@@ -55,6 +67,11 @@ void q8gemm_ukernel_4x8__neon(
     const int16x8_t vxa2 = vreinterpretq_s16_u16(vmovl_u8(va2));
     const uint8x8_t va3 = vld1_u8(a3); a3 += 8;
     const int16x8_t vxa3 = vreinterpretq_s16_u16(vmovl_u8(va3));
+
+    // the a[0|1|2|3] is 16x8, every MLA is performed on *one* 16bit element of a.
+    // The last arguments of `vmlal_lane_s16()` is the index of 16x4 (part of a) structure.
+    // All together, these 8 computations generate a 4x8 32bit part output.
+    // After the for loop finished, a 4x8 32bit output is generated.
 
     const uint8x8_t vb01234567c0 = vld1_u8(w); w = (const void*) ((uintptr_t) w + 8);
     const int16x8_t vxb01234567c0 = vreinterpretq_s16_u16(vsubl_u8(vb01234567c0, vb_zero_point));
