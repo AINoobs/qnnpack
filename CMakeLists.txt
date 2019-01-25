@@ -627,6 +627,7 @@ IF(QNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD 11
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
+  TARGET_INCLUDE_DIRECTORIES(convolution-bench PRIVATE bench)
   TARGET_LINK_LIBRARIES(convolution-bench PRIVATE qnnpack benchmark)
 
   ADD_EXECUTABLE(global-average-pooling-bench bench/global-average-pooling.cc)
