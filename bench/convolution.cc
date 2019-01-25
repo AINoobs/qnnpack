@@ -14,11 +14,13 @@
 #include <iostream>
 #include <random>
 #include <vector>
-#include <iostream>
 
 #include <qnnpack.h>
+#include "threadpool_env.h"
 
 #include <benchmark/benchmark.h>
+
+static ThreadPoolEnv threadpool_env;
 
 static void convolution_q8(benchmark::State& state, const char* net) {
   const size_t batchSize = state.range(0);
@@ -82,13 +84,13 @@ static void convolution_q8(benchmark::State& state, const char* net) {
     batchSize, inputHeight, inputWidth,
     input.data(), inputPixelStride,
     output.data(), outputPixelStride,
-    nullptr /* thread pool */);
+    threadpool_env.pool());
   if (status != qnnp_status_success) {
     state.SkipWithError("failed to setup Convolution operator");
   }
 
   for (auto _ : state) {
-    qnnp_run_operator(convolutionObject, nullptr /* thread pool */);
+    qnnp_run_operator(convolutionObject, threadpool_env.pool());
   }
 
   status = qnnp_delete_operator(convolutionObject);
