@@ -177,6 +177,17 @@ struct q8conv_context {
   const q8conv_ukernel_function ukernel;
 };
 
+/**
+ * Computing a mr*nr block of output.
+ *
+ * Input: *indirect buffer* contains n*oh*ow*kh*kw elements. When computing
+ * one output block, mr*kh*kw elements are used. The buffers has n*(oh*ow)/mr
+ * block.
+ * Channel: In weight pack, every slots contain nr bias and nr*kw*kw*ic weight
+ * elements. There are oc/nr slots.
+ * Output: size n*oc*oh*ow. Compute mr*nr block in one loop. This function is
+ * the look core. There are (oh*ow/mr)*(oc/nr) loops.
+ */
 static void compute_q8conv(
     const struct q8conv_context context[restrict static 1],
     size_t group_index,

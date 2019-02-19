@@ -11,6 +11,17 @@
 #include <qnnpack/q8conv.h>
 
 
+/**
+ * **Really** compute the mr*nr(8x8) output.
+ *
+ * Input(a) points to a *indirect buffer* of kh*kw*mr layout. Each
+ * *indirect pointer* in the buffer represents ic input elements.
+ * Kernel(w) points to a weight pack slot which has nr bias and
+ * nr*kh*kw*ic weight elements.
+ * Output(c) points to a mr*nr output block. Wow, this is pretty simple.
+ * H and W of input, kernel and output are taken as one dimension - size.
+ * In the context of QNNPACK, HWC are taken as SC.
+ */
 void q8conv_ukernel_8x8__neon(
     size_t mr,
     size_t nr,
@@ -24,7 +35,8 @@ void q8conv_ukernel_8x8__neon(
 {
   const uint8x8_t vb_zero_point = vld1_dup_u8((const uint8_t*) &quantization_params->neon.kernel_zero_point);
 
-  int32x4_t vacc0x0123 = vld1q_s32(w); w = (void*) ((uintptr_t) w + sizeof(int32x4_t));
+  // compute mr*nr - 8x8 results.
+  int32x4_t vacc0x0123 = vld1q_s32(w); w = (void*) ((uintptr_t) w + sizeof(int32x4_t)); // get the bias
   int32x4_t vacc0x4567 = vld1q_s32(w); w = (void*) ((uintptr_t) w + sizeof(int32x4_t));
   int32x4_t vacc1x0123 = vacc0x0123;
   int32x4_t vacc1x4567 = vacc0x4567;
@@ -41,7 +53,22 @@ void q8conv_ukernel_8x8__neon(
   int32x4_t vacc7x0123 = vacc0x0123;
   int32x4_t vacc7x4567 = vacc0x4567;
 
+  /**
+   * the main loop of accumulated multiplication.
+   *
+   * In Convolution, each output pixel needs to acumulate kh*kw*ic e.g. (ks*ic)
+   * multiplication of input element and kernel element.
+   * Therefore, in this main loop, there will be (mr*nr)*(ks*ic) multiplication.
+   * The outer loop is ks while inner look is ic. So, in each inner loop
+   * the ic accumulated multiplication of ks*ic of mr*nr output is generated.
+   *
+   * Note, the mr*nr output is generated with input of mr*ks*ic and kernel of
+   * nr*ks*ic. The input is used nr times, while kernel is used mr times.
+   *
+   * The loop will run ks interation.
+   */
   do {
+    // using *next* mr pointers each of which point to ic input elements.
     const uint8_t* restrict a0 = *a++;
     const uint8_t* restrict a1 = *a++;
     const uint8_t* restrict a2 = *a++;
@@ -51,8 +78,11 @@ void q8conv_ukernel_8x8__neon(
     const uint8_t* restrict a6 = *a++;
     const uint8_t* restrict a7 = *a++;
 
+    // in this inner loop, use input of mr*kc size input and
     size_t k = kc;
     for (; k >= 8; k -= 8) {
+      // loads 8x8 input elements into 8 vectors, each vector one of mr.
+      // and moves input pointer to next 8 of axis ic.
       const uint8x8_t va0 = vld1_u8(a0); a0 += 8;
       const uint8x8_t va1 = vld1_u8(a1); a1 += 8;
       const uint8x8_t va2 = vld1_u8(a2); a2 += 8;
@@ -70,6 +100,11 @@ void q8conv_ukernel_8x8__neon(
       const int16x8_t vxa6 = vreinterpretq_s16_u16(vmovl_u8(va6));
       const int16x8_t vxa7 = vreinterpretq_s16_u16(vmovl_u8(va7));
 
+      // use first element of all eight input vectors, they are used nr(8) times.
+      // use *next* nr(8) weight elements. The weight pointer is one-pass, but
+      // the loaded nr(8) weight elements are used mr(8) times here.
+      // It means, the memory access of input and kernel has been reduced to
+      // 1/8 when compared to a trivial implementation.
       {
         const uint8x8_t vb01234567 = vld1_u8(w); w = (void*) ((uintptr_t) w + sizeof(uint8x8_t));
         const int16x8_t vxb01234567 = vreinterpretq_s16_u16(vsubl_u8(vb01234567, vb_zero_point));
