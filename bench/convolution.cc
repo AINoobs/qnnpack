@@ -508,6 +508,36 @@ static void pwConv2d(benchmark::internal::Benchmark* b) {
   sleep(1);
 }
 
+static void customLaneConv1(benchmark::internal::Benchmark* b) {
+  b->ArgNames({"N", "H", "W", "KH", "KW", "S", "D", "G", "GCin", "GCout"});
+
+  /*       N   H    W   KH  KW  S  D    G  GCin  GCout */
+  b->Args({1, 384, 672,  3,  3, 2, 1,    1,   3,   16});
+  sleep(1);
+}
+
+static void customLargeConv(benchmark::internal::Benchmark* b) {
+  b->ArgNames({"N", "H", "W", "KH", "KW", "S", "D", "G", "GCin", "GCout"});
+
+  /*       N   H    W   KH  KW  S  D    G  GCin  GCout */
+  b->Args({1, 224, 224,  3,  3, 2, 1,    1,   64,   64});
+  b->Args({1, 224, 224,  3,  3, 1, 1,    1,   64,   64});
+  b->Args({1, 224, 224,  1,  1, 2, 1,    1,   64,   64});
+  b->Args({1, 224, 224,  1,  1, 1, 1,    1,   64,   64});
+  sleep(1);
+}
+
+static void customBinConv(benchmark::internal::Benchmark* b) {
+  b->ArgNames({"N", "H", "W", "KH", "KW", "S", "D", "G", "GCin", "GCout"});
+
+  /*       N   H    W   KH  KW  S  D    G  GCin  GCout */
+  b->Args({1, 128, 128,  3,  3, 2, 1,    1,   64,   64});
+  b->Args({1, 128, 128,  3,  3, 1, 1,    1,   64,   64});
+  b->Args({1, 128, 128,  1,  1, 2, 1,    1,   64,   64});
+  b->Args({1, 128, 128,  1,  1, 1, 1,    1,   64,   64});
+  sleep(1);
+}
+
 static void MobileNetV2(benchmark::internal::Benchmark* b) {
   b->ArgNames({"N", "H", "W", "KH", "KW", "S", "D", "G", "GCin", "GCout"});
 
@@ -1002,6 +1032,9 @@ static void DWConv5x5(benchmark::internal::Benchmark* b) {
 BENCHMARK_CAPTURE(convolution_q8, mobilenet_v1, "MobileNet v1")->Apply(MobileNetV1);
 BENCHMARK_CAPTURE(convolution_q8, mobilenet_v1_full, "MobileNet v1 (Full)")->Apply(MobileNetV1Full);
 BENCHMARK_CAPTURE(convolution_q8, pointwise_conv2d, "Pointwise Conv2d in MobileNetV1")->Apply(pwConv2d);
+BENCHMARK_CAPTURE(convolution_q8, custom_lane_conv1, "Conv2d in Lane detection")->Apply(customLaneConv1);
+BENCHMARK_CAPTURE(convolution_q8, custom_large_conv, "Large Conv2d")->Apply(customLargeConv);
+BENCHMARK_CAPTURE(convolution_q8, custom_bin_conv, "HW 256 Conv2d")->Apply(customBinConv);
 BENCHMARK_CAPTURE(convolution_q8, mobilenet_v2, "MobileNet v2")->Apply(MobileNetV2);
 BENCHMARK_CAPTURE(convolution_q8, shufflenet_v1_g1, "ShuffleNet v1 (1 group)")->Apply(ShuffleNetV1G1);
 BENCHMARK_CAPTURE(convolution_q8, shufflenet_v1_g2, "ShuffleNet v1 (2 groups)")->Apply(ShuffleNetV1G2);

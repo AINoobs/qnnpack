@@ -41,6 +41,8 @@ static void init(void) {
     qnnp_log_error("QNNPACK initialization failed: NEON is not supported");
     return;
   }
+
+  qnnp_log_info("arm kernel: 4x8__aarch32_neon");
   qnnp_params.q8conv = (struct q8conv_parameters) {
       .gemm = q8gemm_ukernel_4x8__aarch32_neon,
       .conv = q8conv_ukernel_4x8__aarch32_neon,
@@ -119,6 +121,7 @@ static void init(void) {
   qnnp_params.u8lut32norm = u8lut32norm_ukernel__scalar;
   qnnp_params.x8lut = x8lut_ukernel__scalar;
 #elif CPUINFO_ARCH_ARM64
+  qnnp_log_info("arm64 kernel: 8x8__aarch64_neon");
   qnnp_params.q8conv = (struct q8conv_parameters) {
       .gemm = q8gemm_ukernel_8x8__aarch64_neon,
       .conv = q8conv_ukernel_8x8__aarch64_neon,
@@ -175,6 +178,7 @@ static void init(void) {
     qnnp_log_error("QNNPACK initialization failed: SSE2 is not supported");
     return;
   }
+  qnnp_log_info("x86/x64 kernel: 4x4c2__sse2");
   qnnp_params.q8conv = (struct q8conv_parameters){
       .gemm = q8gemm_ukernel_4x4c2__sse2,
       .conv = q8conv_ukernel_4x4c2__sse2,
