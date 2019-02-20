@@ -104,19 +104,75 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         # va0 - va7 := va - va_offset
         LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
         UXTL v0.8h, v0.8b
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
         LD1 {v1.8b}, [x9], 8
         UXTL v1.8h, v1.8b
         LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
         UXTL v2.8h, v2.8b
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
         LD1 {v3.8b}, [x11], 8
         UXTL v3.8h, v3.8b
         LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
         UXTL v4.8h, v4.8b
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
         LD1 {v5.8b}, [x13], 8
         UXTL v5.8h, v5.8b
         LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
         UXTL v6.8h, v6.8b
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
         LD1 {v7.8b}, [x15], 8
         UXTL v7.8h, v7.8b
 
@@ -358,33 +414,89 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // Load x0-a7
         LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
+        LD1 {v0.8b}, [x16], 8
         USHL d0, d0, d29
         UXTL v0.8h, v0.8b
 
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
+        LD1 {v1.8b}, [x9], 8
         LD1 {v1.8b}, [x9], 8
         USHL d1, d1, d29
         UXTL v1.8h, v1.8b
 
         LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
+        LD1 {v2.8b}, [x10], 8
         USHL d2, d2, d29
         UXTL v2.8h, v2.8b
 
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
+        LD1 {v3.8b}, [x11], 8
         LD1 {v3.8b}, [x11], 8
         USHL d3, d3, d29
         UXTL v3.8h, v3.8b
 
         LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
+        LD1 {v4.8b}, [x12], 8
         USHL d4, d4, d29
         UXTL v4.8h, v4.8b
 
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
+        LD1 {v5.8b}, [x13], 8
         LD1 {v5.8b}, [x13], 8
         USHL d5, d5, d29
         UXTL v5.8h, v5.8b
 
         LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
+        LD1 {v6.8b}, [x14], 8
         USHL d6, d6, d29
         UXTL v6.8h, v6.8b
 
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
+        LD1 {v7.8b}, [x15], 8
         LD1 {v7.8b}, [x15], 8
         USHL d7, d7, d29
         UXTL v7.8h, v7.8b
