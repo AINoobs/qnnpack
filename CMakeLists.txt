@@ -192,6 +192,7 @@ SET(QNNPACK_AARCH32_ASM_UKERNELS
 
 SET(QNNPACK_AARCH64_ASM_UKERNELS
   src/q8conv/8x8-aarch64-neon.S
+  src/q8conv/8x8-aarch64-neon-dull.S
   src/q8gemm/8x8-aarch64-neon.S)
 
 SET(QNNPACK_X86_SSE2_UKERNELS

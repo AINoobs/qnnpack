@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 
 #include <pthread.h>
 
@@ -122,9 +123,29 @@ static void init(void) {
   qnnp_params.x8lut = x8lut_ukernel__scalar;
 #elif CPUINFO_ARCH_ARM64
   qnnp_log_info("arm64 kernel: 8x8__aarch64_neon");
+
+  const char* use_ukernel = getenv("QNNPACK_Q8CONV_AARCH64_UKERNEL");
+  q8conv_ukernel_function conv_ukernel;
+  if (use_ukernel == NULL) {
+    printf("QNNPACK_Q8CONV_AARCH64_UKERNEL not provided, using default ukernel\n");
+    conv_ukernel = q8conv_ukernel_8x8__aarch64_neon;
+  } else {
+    printf("QNNPACK_Q8CONV_AARCH64_UKERNEL: %s\n", use_ukernel);
+    if (strcmp(use_ukernel, "asm0") == 0) {
+      conv_ukernel = q8conv_ukernel_8x8__aarch64_neon;
+    } else if (strcmp(use_ukernel, "c0") == 0) {
+      conv_ukernel = q8conv_ukernel_8x8__neon;
+    } else if (strcmp(use_ukernel, "asm1") == 0) {
+      conv_ukernel = q8conv_ukernel_8x8__aarch64_neon_dull;
+    /* } else if (strcmp(use_ukernel, "c1") == 0) { */
+    } else {
+      conv_ukernel = q8conv_ukernel_8x8__aarch64_neon;
+    }
+  }
+
   qnnp_params.q8conv = (struct q8conv_parameters) {
       .gemm = q8gemm_ukernel_8x8__aarch64_neon,
-      .conv = q8conv_ukernel_8x8__aarch64_neon,
+      .conv = conv_ukernel,
       .mr = 8,
       .nr = 8,
       .kr = 1,

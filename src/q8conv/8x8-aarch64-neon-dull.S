@@ -18,7 +18,7 @@
 #    uint8_t* restrict c,
 #    size_t c_stride,
 #    const union qnnp_q31_requantization_params quantization_params[restrict static 1])
-BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
+BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
         # Load params
         LDR x8, [sp]
 
@@ -93,6 +93,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
 0:
         # b0-7 (channel 0)
         LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
         USUBL v27.8h, v27.8b, v25.8b
 
         # va0 - va7 := va - va_offset
@@ -115,6 +122,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
 
         // b0-7 (channel 1)
         LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
 
         SMLAL v8.4s, v27.4h, v0.h[0]    // vacc0x0123 += vb0123 * va0[0]
         SMLAL2 v9.4s, v27.8h, v0.h[0]   // vacc0x4567 += vb4567 * va0[0]
@@ -135,6 +149,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
         SMLAL2 v23.4s, v27.8h, v7.h[0]  // vacc7x4567 += vb4567 * va7[0]
 
         // b0-7 (channel 2)
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
         LD1 {v27.8b}, [x5], 8
 
         SMLAL v8.4s, v28.4h, v0.h[1]    // vacc0x0123 += vb0123 * va0[1]
@@ -157,6 +178,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
 
         // b0-7 (channel 3)
         LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
 
         SMLAL v8.4s, v27.4h, v0.h[2]    // vacc0x0123 += vb0123 * va0[2]
         SMLAL2 v9.4s, v27.8h, v0.h[2]   // vacc0x4567 += vb4567 * va0[2]
@@ -177,6 +205,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
         SMLAL2 v23.4s, v27.8h, v7.h[2]  // vacc7x4567 += vb4567 * va7[2]
 
         // b0-7 (channel 4)
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
         LD1 {v27.8b}, [x5], 8
 
         SMLAL v8.4s, v28.4h, v0.h[3]    // vacc0x0123 += vb0123 * va0[3]
@@ -199,6 +234,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
 
         // b0-7 (channel 5)
         LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
 
         SMLAL v8.4s, v27.4h, v0.h[4]    // vacc0x0123 += vb0123 * va0[4]
         SMLAL2 v9.4s, v27.8h, v0.h[4]   // vacc0x4567 += vb4567 * va0[4]
@@ -220,6 +262,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
 
         // b0-7 (channel 6)
         LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
 
         SMLAL v8.4s, v28.4h, v0.h[5]    // vacc0x0123 += vb0123 * va0[5]
         SMLAL2 v9.4s, v28.8h, v0.h[5]   // vacc0x4567 += vb4567 * va0[5]
@@ -240,6 +289,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
         SMLAL2 v23.4s, v28.8h, v7.h[5]  // vacc7x4567 += vb4567 * va7[5]
 
         // b0-7 (channel 7)
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
         LD1 {v28.8b}, [x5], 8
 
         SMLAL v8.4s, v27.4h, v0.h[6]    // vacc0x0123 += vb0123 * va0[6]
@@ -335,6 +391,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
 
         // Channel 0
         LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
         USUBL v27.8h, v27.8b, v25.8b
 
         SMLAL v8.4s, v27.4h, v0.h[0]    // vacc0x0123 += vb0123 * va0[0]
@@ -359,6 +422,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
 
         // Channel 1
         LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
         USUBL v28.8h, v28.8b, v25.8b
 
         SMLAL v8.4s, v28.4h, v0.h[1]    // vacc0x0123 += vb0123 * va0[1]
@@ -381,6 +451,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
         B.LS 2f
 
         // Channel 2
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
         LD1 {v27.8b}, [x5], 8
         USUBL v27.8h, v27.8b, v25.8b
 
@@ -406,6 +483,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
 
         // Channel 3
         LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
         USUBL v28.8h, v28.8b, v25.8b
 
         SMLAL v8.4s, v28.4h, v0.h[3]    // vacc0x0123 += vb0123 * va0[3]
@@ -428,6 +512,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
         B.LS 2f
 
         // Channel 4
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
         LD1 {v27.8b}, [x5], 8
         USUBL v27.8h, v27.8b, v25.8b
 
@@ -453,6 +544,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
 
         // Channel 5
         LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
+        LD1 {v28.8b}, [x5], 8
         USUBL v28.8h, v28.8b, v25.8b
 
         SMLAL v8.4s, v28.4h, v0.h[5]    // vacc0x0123 += vb0123 * va0[5]
@@ -475,6 +573,13 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon
         B.LS 2f
 
         // Channel 6
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
+        LD1 {v27.8b}, [x5], 8
         LD1 {v27.8b}, [x5], 8
         USUBL v27.8h, v27.8b, v25.8b
 

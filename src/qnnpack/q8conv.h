@@ -33,6 +33,7 @@ extern "C" {
 DECLARE_Q8CONV_UKERNEL_FUNCTION(q8conv_ukernel_4x8__neon)
 DECLARE_Q8CONV_UKERNEL_FUNCTION(q8conv_ukernel_4x8__aarch32_neon)
 DECLARE_Q8CONV_UKERNEL_FUNCTION(q8conv_ukernel_8x8__aarch64_neon)
+DECLARE_Q8CONV_UKERNEL_FUNCTION(q8conv_ukernel_8x8__aarch64_neon_dull)
 DECLARE_Q8CONV_UKERNEL_FUNCTION(q8conv_ukernel_8x8__neon)
 DECLARE_Q8CONV_UKERNEL_FUNCTION(q8conv_ukernel_4x4c2__sse2)
 
