@@ -93,98 +93,110 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 0:
         # b0-7 (channel 0)
         LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
         USUBL v27.8h, v27.8b, v25.8b
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
 
         # va0 - va7 := va - va_offset
         LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         UXTL v0.8h, v0.8b
         LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         UXTL v1.8h, v1.8b
         LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         UXTL v2.8h, v2.8b
         LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         UXTL v3.8h, v3.8b
         LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         UXTL v4.8h, v4.8b
         LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         UXTL v5.8h, v5.8b
         LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         UXTL v6.8h, v6.8b
         LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         UXTL v7.8h, v7.8b
 
         // b0-7 (channel 1)
         LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+
+
 
         SMLAL v8.4s, v27.4h, v0.h[0]    // vacc0x0123 += vb0123 * va0[0]
         SMLAL2 v9.4s, v27.8h, v0.h[0]   // vacc0x4567 += vb4567 * va0[0]
@@ -206,13 +218,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // b0-7 (channel 2)
         LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
 
         SMLAL v8.4s, v28.4h, v0.h[1]    // vacc0x0123 += vb0123 * va0[1]
         SMLAL2 v9.4s, v28.8h, v0.h[1]   // vacc0x4567 += vb4567 * va0[1]
@@ -234,13 +247,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // b0-7 (channel 3)
         LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
 
         SMLAL v8.4s, v27.4h, v0.h[2]    // vacc0x0123 += vb0123 * va0[2]
         SMLAL2 v9.4s, v27.8h, v0.h[2]   // vacc0x4567 += vb4567 * va0[2]
@@ -262,13 +276,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // b0-7 (channel 4)
         LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
 
         SMLAL v8.4s, v28.4h, v0.h[3]    // vacc0x0123 += vb0123 * va0[3]
         SMLAL2 v9.4s, v28.8h, v0.h[3]   // vacc0x4567 += vb4567 * va0[3]
@@ -290,13 +305,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // b0-7 (channel 5)
         LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
 
         SMLAL v8.4s, v27.4h, v0.h[4]    // vacc0x0123 += vb0123 * va0[4]
         SMLAL2 v9.4s, v27.8h, v0.h[4]   // vacc0x4567 += vb4567 * va0[4]
@@ -318,13 +334,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // b0-7 (channel 6)
         LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
 
         SMLAL v8.4s, v28.4h, v0.h[5]    // vacc0x0123 += vb0123 * va0[5]
         SMLAL2 v9.4s, v28.8h, v0.h[5]   // vacc0x4567 += vb4567 * va0[5]
@@ -346,13 +363,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // b0-7 (channel 7)
         LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
 
         SMLAL v8.4s, v27.4h, v0.h[6]    // vacc0x0123 += vb0123 * va0[6]
         SMLAL2 v9.4s, v27.8h, v0.h[6]   // vacc0x4567 += vb4567 * va0[6]
@@ -414,102 +432,111 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // Load x0-a7
         LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
-        LD1 {v0.8b}, [x16], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USHL d0, d0, d29
         UXTL v0.8h, v0.8b
 
         LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
-        LD1 {v1.8b}, [x9], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USHL d1, d1, d29
         UXTL v1.8h, v1.8b
 
         LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
-        LD1 {v2.8b}, [x10], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USHL d2, d2, d29
         UXTL v2.8h, v2.8b
 
         LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
-        LD1 {v3.8b}, [x11], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USHL d3, d3, d29
         UXTL v3.8h, v3.8b
 
         LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
-        LD1 {v4.8b}, [x12], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USHL d4, d4, d29
         UXTL v4.8h, v4.8b
 
         LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
-        LD1 {v5.8b}, [x13], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USHL d5, d5, d29
         UXTL v5.8h, v5.8b
 
         LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
-        LD1 {v6.8b}, [x14], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USHL d6, d6, d29
         UXTL v6.8h, v6.8b
 
         LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
-        LD1 {v7.8b}, [x15], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USHL d7, d7, d29
         UXTL v7.8h, v7.8b
 
         // Channel 0
         LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USUBL v27.8h, v27.8b, v25.8b
 
         SMLAL v8.4s, v27.4h, v0.h[0]    // vacc0x0123 += vb0123 * va0[0]
@@ -534,13 +561,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // Channel 1
         LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USUBL v28.8h, v28.8b, v25.8b
 
         SMLAL v8.4s, v28.4h, v0.h[1]    // vacc0x0123 += vb0123 * va0[1]
@@ -564,13 +592,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // Channel 2
         LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USUBL v27.8h, v27.8b, v25.8b
 
         SMLAL v8.4s, v27.4h, v0.h[2]    // vacc0x0123 += vb0123 * va0[2]
@@ -595,13 +624,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // Channel 3
         LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USUBL v28.8h, v28.8b, v25.8b
 
         SMLAL v8.4s, v28.4h, v0.h[3]    // vacc0x0123 += vb0123 * va0[3]
@@ -625,13 +655,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // Channel 4
         LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USUBL v27.8h, v27.8b, v25.8b
 
         SMLAL v8.4s, v27.4h, v0.h[4]    // vacc0x0123 += vb0123 * va0[4]
@@ -656,13 +687,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // Channel 5
         LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
-        LD1 {v28.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USUBL v28.8h, v28.8b, v25.8b
 
         SMLAL v8.4s, v28.4h, v0.h[5]    // vacc0x0123 += vb0123 * va0[5]
@@ -686,13 +718,14 @@ BEGIN_FUNCTION q8conv_ukernel_8x8__aarch64_neon_dull
 
         // Channel 6
         LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
-        LD1 {v27.8b}, [x5], 8
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
+        add v8.4s, v8.4s, v8.4s
         USUBL v27.8h, v27.8b, v25.8b
 
         SMLAL v8.4s, v27.4h, v0.h[6]    // vacc0x0123 += vb0123 * va0[6]
