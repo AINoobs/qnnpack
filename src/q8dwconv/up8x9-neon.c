@@ -31,6 +31,8 @@ void q8dwconv_ukernel_up8x9__neon(
 #ifdef __aarch64__
   /* Larger number of registers on AArch64 make it possible to process few pixels at a time */
   if (input_stride == 3 * sizeof(void*)) {
+    // compute over HW axis, step 3.
+    // H and W are merges as one W.
     for (; output_width >= 3; output_width -= 3) {
       const uint8_t* i00 = input[ 0];
       const uint8_t* i10 = input[ 1];
@@ -56,7 +58,14 @@ void q8dwconv_ukernel_up8x9__neon(
 
       size_t c = channels;
       const void* w = weights;
+      // In this loop, compute over the OC/IC axis.
+      // Depthwise conv doesn't reduce over IC axis. IC serves as elementwise
+      // processing axis in this scenario. Step by 8 as SIMD.
       for (; c >= 8; c -= 8) {
+        // compute 3x8 (WxC) output onetime.
+        // 8 is the C vectorized axis which will be ignored in comments.
+        // For 3 output elements, considering the input overlap regarding kernel size,
+        // A 3x5 (HxW) input is needed to finish the compute.
         int32x4_t vacc0_lo = vld1q_s32(w); w = (void*) ((uintptr_t) w + sizeof(int32x4_t));
         int32x4_t vacc0_hi = vld1q_s32(w); w = (void*) ((uintptr_t) w + sizeof(int32x4_t));
         int32x4_t vacc1_lo = vacc0_lo;
