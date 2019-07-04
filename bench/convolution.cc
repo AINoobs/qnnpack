@@ -14,6 +14,7 @@
 #include <iostream>
 #include <random>
 #include <vector>
+#include <unistd.h>
 
 #include <qnnpack.h>
 #include "threadpool_env.h"
@@ -105,6 +106,19 @@ static void convolution_q8(benchmark::State& state, const char* net) {
       groups * groupInputChannels * groupOutputChannels *
       kernelHeight * kernelWidth);
 }
+
+static inline void pointwise(benchmark::internal::Benchmark* b,
+                             const int IHW, const int IC, const int OC) {
+  /*       N   H    W   KH  KW  S  D    G  GCin  GCout */
+  b->Args({1, IHW, IHW,  1,  1, 1, 1,   1,    IC,   OC});
+}
+
+static inline void depthwise(benchmark::internal::Benchmark* b,
+                             const int IHW, const int S, const int C) {
+  /*       N   H    W   KH  KW  S  D    G  GCin  GCout */
+  b->Args({1, IHW, IHW,  3,  3, S, 1,   C,    1,   1});
+}
+
 
 /* ShuffleNet v1 with 1 group */
 static void ShuffleNetV1G1(benchmark::internal::Benchmark* b) {
@@ -452,6 +466,62 @@ static void MobileNetV1(benchmark::internal::Benchmark* b) {
   b->Args({1,   7,   7,  1,  1, 1, 1,    1, 1024, 1024});
 }
 
+
+static void MobileNetV1Full(benchmark::internal::Benchmark* b) {
+  b->ArgNames({"N", "H", "W", "KH", "KW", "S", "D", "G", "GCin", "GCout"});
+
+  /*       N   H    W   KH  KW  S  D    G   GCin  GCout */
+  b->Args({1, 224, 224,  3,  3, 2, 1,    1,    3,   32});
+
+  b->Args({1, 112, 112,  3,  3, 1, 1,   32,    1,    1});
+  b->Args({1, 112, 112,  1,  1, 1, 1,    1,   32,   64});
+
+  b->Args({1, 112, 112,  3,  3, 2, 1,   64,    1,    1});
+  b->Args({1,  56,  56,  1,  1, 1, 1,    1,   64,  128});
+
+  b->Args({1,  56,  56,  3,  3, 1, 1,  128,    1,    1});
+  b->Args({1,  56,  56,  1,  1, 1, 1,    1,  128,  128});
+
+  b->Args({1,  56,  56,  3,  3, 2, 1,  128,    1,    1});
+  b->Args({1,  28,  28,  1,  1, 1, 1,    1,  128,  256});
+
+  b->Args({1,  28,  28,  3,  3, 1, 1,  256,    1,    1});
+  b->Args({1,  28,  28,  1,  1, 1, 1,    1,  256,  256});
+
+  b->Args({1,  28,  28,  3,  3, 2, 1,  256,    1,    1});
+  b->Args({1,  14,  14,  1,  1, 1, 1,    1,  256,  512});
+
+  b->Args({1,  14,  14,  3,  3, 1, 1,  512,    1,    1});
+  b->Args({1,  14,  14,  1,  1, 1, 1,    1,  512,  512});
+  b->Args({1,  14,  14,  3,  3, 1, 1,  512,    1,    1});
+  b->Args({1,  14,  14,  1,  1, 1, 1,    1,  512,  512});
+  b->Args({1,  14,  14,  3,  3, 1, 1,  512,    1,    1});
+  b->Args({1,  14,  14,  1,  1, 1, 1,    1,  512,  512});
+  b->Args({1,  14,  14,  3,  3, 1, 1,  512,    1,    1});
+  b->Args({1,  14,  14,  1,  1, 1, 1,    1,  512,  512});
+  b->Args({1,  14,  14,  3,  3, 1, 1,  512,    1,    1});
+  b->Args({1,  14,  14,  1,  1, 1, 1,    1,  512,  512});
+
+  b->Args({1,  14,  14,  3,  3, 2, 1,  512,    1,    1});
+  b->Args({1,   7,   7,  1,  1, 1, 1,    1,  512, 1024});
+
+  b->Args({1,   7,   7,  3,  3, 1, 1, 1024,    1,    1});
+
+  b->Args({1,   7,   7,  1,  1, 1, 1,    1, 1024, 1024});
+
+  b->Args({1,   1,   1,  1,  1, 1, 1,    1, 1024, 1001});
+}
+
+static void customConv1(benchmark::internal::Benchmark* b) {
+  b->ArgNames({"N", "H", "W", "KH", "KW", "S", "D", "G", "GCin", "GCout"});
+
+  /*       N   H    W   KH  KW  S  D    G  GCin  GCout */
+  // first conv of lane net
+  b->Args({1, 384, 672,  3,  3, 2, 1,    1,   3,   24});
+  // large dilation depthwise conv of lane net
+  b->Args({1, 48,   84,  3,  3, 1, 1,  112, 112,   112});
+}
+
 static void MobileNetV2(benchmark::internal::Benchmark* b) {
   b->ArgNames({"N", "H", "W", "KH", "KW", "S", "D", "G", "GCin", "GCout"});
 
@@ -535,6 +605,57 @@ static void MobileNetV2(benchmark::internal::Benchmark* b) {
   /**************** Post-pooling Conv2D ****************/
   /*       N   H    W   KH  KW  S  D    G  GCin  GCout */
   b->Args({1,   1,   1,  1,  1, 1, 1,   1, 1280, 1000});
+}
+
+static void MobileNetV2Full(benchmark::internal::Benchmark* b) {
+  b->ArgNames({"N", "H", "W", "KH", "KW", "S", "D", "G", "GCin", "GCout"});
+
+  auto block = [&b] (const int IHW, const int S, const int IC, const int OC,
+                     const int internal_channel) {
+    pointwise(b, IHW, IC, internal_channel);
+    depthwise(b, IHW, S, internal_channel);
+    pointwise(b, IHW/S, internal_channel, OC);
+  };
+
+  /*       N   H    W   KH  KW  S  D    G  GCin  GCout */
+  b->Args({1, 224, 224,  3,  3, 2, 1,   1,    3,   32});
+
+  /******************** Bottleneck 1 *******************/
+  depthwise(b, 112, 1, 32);
+  pointwise(b, 112, 32, 16);
+
+  /******************** Bottleneck 2 *******************/
+  block(112, 2,  16,  24,  96);
+  block( 56, 1,  24,  24, 144);
+
+  /******************** Bottleneck 3 *******************/
+  block( 56, 2,  24,  32, 144);
+  block( 28, 1,  32,  32, 192);
+  block( 28, 1,  32,  32, 192);
+
+  /******************** Bottleneck 4 *******************/
+  block( 28, 2,  32,  64, 192);
+  block( 14, 1,  64,  64, 384);
+  block( 14, 1,  64,  64, 384);
+  block( 14, 1,  64,  64, 384);
+
+  /******************** Bottleneck 5 *******************/
+  block( 14, 1,  64,  96, 384);
+  block( 14, 1,  96,  96, 576);
+  block( 14, 1,  96,  96, 576);
+
+  /******************** Bottleneck 6 *******************/
+  block( 14, 2,  96, 160, 576);
+  block(  7, 1, 160, 160, 960);
+  block(  7, 1, 160, 160, 960);
+
+  /******************** Bottleneck 7 *******************/
+  block(  7, 1, 160, 320, 960);
+
+  /**************** Pre-pooling Conv2D *****************/
+  pointwise(b, 7, 320, 1280);
+  /**************** Post-pooling Conv2D ****************/
+  pointwise(b, 1, 1280, 1001);
 }
 
 /* SqueezeNet 1.0 */
@@ -942,6 +1063,10 @@ static void DWConv5x5(benchmark::internal::Benchmark* b) {
   b->Args({1,  7,  7,  5,  5, 1, 1,   32,    1,    1});
   b->Args({1,  7,  7,  5,  5, 1, 1,   16,    1,    1});
 }
+
+BENCHMARK_CAPTURE(convolution_q8, mobilenet_v1_full, "MobileNet v1 (Full)")->Apply(MobileNetV1Full);
+BENCHMARK_CAPTURE(convolution_q8, mobilenet_v2_full, "MobileNet v2 (Full)")->Apply(MobileNetV2Full);
+BENCHMARK_CAPTURE(convolution_q8, custom_lane_conv1, "Custome Conv")->Apply(customConv1);
 
 BENCHMARK_CAPTURE(convolution_q8, mobilenet_v1, "MobileNet v1")->Apply(MobileNetV1);
 BENCHMARK_CAPTURE(convolution_q8, mobilenet_v2, "MobileNet v2")->Apply(MobileNetV2);
