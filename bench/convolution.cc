@@ -522,6 +522,93 @@ static void customConv1(benchmark::internal::Benchmark* b) {
   b->Args({1, 48,   84,  3,  3, 1, 1,  112, 112,   112});
 }
 
+static void LaneNet(benchmark::internal::Benchmark* b) {
+  b->ArgNames({"N", "H", "W", "KH", "KW", "S", "D", "G", "GCin", "GCout"});
+
+  auto dwconv = [&b] (int IHW, int M, int K, int C, int S) {
+    assert(K == 3);
+    b->Args({1, IHW, IHW,  K,  K, S,  1,   C,    1,   1});
+  };
+
+  auto pwconv = [&b] (int IHW, int IC, int K, int OC, int S) {
+    assert(K == 1);
+    assert(S == 1);
+    b->Args({1, IHW, IHW,  K,  K, S, 1,   1,    IC,   OC});
+  };
+
+  /*       N   H    W   KH  KW  S  D    G  GCin  GCout */
+  b->Args({1, 256, 256,  3,  3, 2, 1,   1,    3,   16});
+  dwconv(128 ,    1    ,  3  ,    16   ,  1);
+  pwconv(128 ,    16   ,  1  ,    8    ,  1);
+  pwconv(128 ,    8    ,  1  ,    48   ,  1);
+  dwconv(128 ,    1    ,  3  ,    48   ,  2);
+  pwconv(64  ,    48   ,  1  ,    8    ,  1);
+  pwconv(64  ,    8    ,  1  ,    48   ,  1);
+  dwconv(64  ,    1    ,  3  ,    48   ,  1);
+  pwconv(64  ,    48   ,  1  ,    8    ,  1);
+  pwconv(64  ,    8    ,  1  ,    48   ,  1);
+  dwconv(64  ,    1    ,  3  ,    48   ,  2);
+  pwconv(32  ,    48   ,  1  ,    16   ,  1);
+  pwconv(32  ,    16   ,  1  ,    96   ,  1);
+  dwconv(32  ,    1    ,  3  ,    96   ,  1);
+  pwconv(32  ,    96   ,  1  ,    16   ,  1);
+  pwconv(32  ,    16   ,  1  ,    96   ,  1);
+  dwconv(32  ,    1    ,  3  ,    96   ,  1);
+  pwconv(32  ,    96   ,  1  ,    16   ,  1);
+  pwconv(32  ,    16   ,  1  ,    96   ,  1);
+  dwconv(32  ,    1    ,  3  ,    96   ,  2);
+  pwconv(16  ,    96   ,  1  ,    24   ,  1);
+  pwconv(16  ,    24   ,  1  ,    144  ,  1);
+  dwconv(16  ,    1    ,  3  ,    144  ,  1);
+  pwconv(16  ,    144  ,  1  ,    24   ,  1);
+  pwconv(16  ,    24   ,  1  ,    144  ,  1);
+  dwconv(16  ,    1    ,  3  ,    144  ,  1);
+  pwconv(16  ,    144  ,  1  ,    24   ,  1);
+  pwconv(16  ,    24   ,  1  ,    144  ,  1);
+  dwconv(16  ,    1    ,  3  ,    144  ,  1);
+  pwconv(16  ,    144  ,  1  ,    24   ,  1);
+  pwconv(16  ,    24   ,  1  ,    144  ,  1);
+  dwconv(16  ,    1    ,  3  ,    144  ,  1);
+  pwconv(16  ,    144  ,  1  ,    32   ,  1);
+  pwconv(16  ,    32   ,  1  ,    192  ,  1);
+  dwconv(16  ,    1    ,  3  ,    192  ,  1);
+  pwconv(16  ,    192  ,  1  ,    32   ,  1);
+  pwconv(16  ,    32   ,  1  ,    192  ,  1);
+  dwconv(16  ,    1    ,  3  ,    192  ,  1);
+  pwconv(16  ,    192  ,  1  ,    32   ,  1);
+  pwconv(16  ,    32   ,  1  ,    192  ,  1);
+  dwconv(16  ,    1    ,  3  ,    192  ,  2);
+  pwconv(8   ,    192  ,  1  ,    56   ,  1);
+  pwconv(8   ,    56   ,  1  ,    336  ,  1);
+  dwconv(8   ,    1    ,  3  ,    336  ,  1);
+  pwconv(8   ,    336  ,  1  ,    56   ,  1);
+  pwconv(8   ,    56   ,  1  ,    336  ,  1);
+  dwconv(8   ,    1    ,  3  ,    336  ,  1);
+  pwconv(8   ,    336  ,  1  ,    56   ,  1);
+  pwconv(8   ,    56   ,  1  ,    336  ,  1);
+  dwconv(8   ,    1    ,  3  ,    336  ,  1);
+  pwconv(8   ,    336  ,  1  ,    112  ,  1);
+  dwconv(8   ,    1    ,  3  ,    168  ,  1);
+  pwconv(8   ,    168  ,  1  ,    24   ,  1);
+  dwconv(32  ,    1    ,  3  ,    40   ,  1);
+  pwconv(32  ,    40   ,  1  ,    16   ,  1);
+  dwconv(32  ,    1    ,  3  ,    56   ,  1);
+  pwconv(32  ,    56   ,  1  ,    16   ,  1);
+  dwconv(32  ,    1    ,  3  ,    72   ,  1);
+  pwconv(32  ,    72   ,  1  ,    16   ,  1);
+  dwconv(32  ,    1    ,  3  ,    88   ,  1);
+  pwconv(32  ,    88   ,  1  ,    40   ,  1);
+  dwconv(32  ,    1    ,  3  ,    40   ,  1);
+  pwconv(32  ,    40   ,  1  ,    40   ,  1);
+  pwconv(32  ,    40   ,  1  ,    2    ,  1);
+  dwconv(32  ,    1    ,  3  ,    88   ,  1);
+  pwconv(32  ,    88   ,  1  ,    40   ,  1);
+  dwconv(32  ,    1    ,  3  ,    40   ,  1);
+  pwconv(32  ,    40   ,  1  ,    40   ,  1);
+  pwconv(32  ,    40   ,  1  ,    1    ,  1);
+
+}
+
 static void MobileNetV2(benchmark::internal::Benchmark* b) {
   b->ArgNames({"N", "H", "W", "KH", "KW", "S", "D", "G", "GCin", "GCout"});
 
@@ -1067,6 +1154,7 @@ static void DWConv5x5(benchmark::internal::Benchmark* b) {
 BENCHMARK_CAPTURE(convolution_q8, mobilenet_v1_full, "MobileNet v1 (Full)")->Apply(MobileNetV1Full);
 BENCHMARK_CAPTURE(convolution_q8, mobilenet_v2_full, "MobileNet v2 (Full)")->Apply(MobileNetV2Full);
 BENCHMARK_CAPTURE(convolution_q8, custom_lane_conv1, "Custome Conv")->Apply(customConv1);
+BENCHMARK_CAPTURE(convolution_q8, lanenet, "LaneNet")->Apply(LaneNet);
 
 BENCHMARK_CAPTURE(convolution_q8, mobilenet_v1, "MobileNet v1")->Apply(MobileNetV1);
 BENCHMARK_CAPTURE(convolution_q8, mobilenet_v2, "MobileNet v2")->Apply(MobileNetV2);
