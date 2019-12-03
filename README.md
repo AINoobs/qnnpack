@@ -2,7 +2,7 @@
 
 This `explained` branch adds some comments which can help you understand QNNPACK implementation.
 
-I have recently [written an article](https://jackwish.net/reveal-qnnpack-implementation.html) which reveals the detail implementation of GEMM and convolution of QNNPACK. You may read it together with this branch to understand the detail. Sad story is that [the article](https://jackwish.net/reveal-qnnpack-implementation.html) was written in Chinese, and I cannot afford to rewrite it in English, but you may try [Google translate](https://translate.google.com/translate?sl=zh-CN&tl=en&u=https://jackwish.net/reveal-qnnpack-implementation.html). Thank you.
+I have recently [written an article](https://jackwish.net/2019/reveal-qnnpack-implementation.html) which reveals the detail implementation of GEMM and convolution of QNNPACK. You may read it together with this branch to understand the detail. Sad story is that [the article](https://jackwish.net/2019/reveal-qnnpack-implementation.html) was written in Chinese, and I cannot afford to rewrite it in English, but you may try [Google translate](https://translate.google.com/translate?sl=zh-CN&tl=en&u=https://jackwish.net/2019/reveal-qnnpack-implementation.html). Thank you.
 
 
 # QNNPACK
